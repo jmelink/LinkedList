@@ -1,9 +1,14 @@
 package com.solvd.linkedlist;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.solvd.linkedlist.product.Product;
 
 public class LinkedList<P extends Product> {
 	private Node<P> headNode;
+	
+	private final static Logger LOGGER = LogManager.getLogger(LinkedList.class.getClass());
 	
 	public LinkedList() {
 		
@@ -18,7 +23,7 @@ public class LinkedList<P extends Product> {
 	}
 
 	public void insert(P data, Integer index) {
-		System.out.println("Insert " + data.toString() + " at index " + index);
+		LOGGER.info("Insert " + data.toString() + " at index " + index);
 		
 		Node<P> node = new Node<P>(data);
 		
@@ -62,7 +67,7 @@ public class LinkedList<P extends Product> {
 	}
 	
 	public void remove(Integer index) {
-		System.out.println("Remove node at index " + index);
+		LOGGER.info("Remove node at index " + index);
 		if (getHeadNode() != null) {
 			Integer incrementer = 0;
 			Node<P> nodeToRemove = getHeadNode();
@@ -85,7 +90,7 @@ public class LinkedList<P extends Product> {
 				nodeToRemove.setNext(null);
 			}
 		} else {
-			System.out.println("There are no elements in the list to remove.");
+			LOGGER.info("There are no elements in the list to remove.");
 		}
 	}
 }

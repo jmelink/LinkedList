@@ -3,6 +3,10 @@ package com.solvd.linkedlist;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.solvd.linkedlist.product.Bread;
 import com.solvd.linkedlist.product.Chicken;
 import com.solvd.linkedlist.product.Milk;
@@ -10,6 +14,8 @@ import com.solvd.linkedlist.product.Product;
 
 public class Main {
 
+	private final static Logger LOGGER = LogManager.getLogger(Main.class.getClass());
+	
 	public static void main(String[] args) throws IllegalAccessException, InvocationTargetException, ClassNotFoundException, InstantiationException, IllegalArgumentException, NoSuchMethodException, SecurityException {
 		Bread bread1 = new Bread("Bread", 42331, "Loaf", 1.79, 2.99, 10);
 		Bread bread2 = new Bread("Bread", 42331, "Loaf", 1.79, 2.99, 4);
@@ -54,30 +60,29 @@ public class Main {
 	public static void printList(LinkedList<Product> list)
     {
         Node<Product> currentNode = list.getHeadNode();
-        System.out.print("LinkedList: ");
+        LOGGER.info("LinkedList: ");
 
         while (currentNode != null) {
-            System.out.print(currentNode.getProduct().toString());
+            LOGGER.info(currentNode.getProduct().toString());
             currentNode = currentNode.getNext();
             if (currentNode != null) {
-            	System.out.print(" || ");
+            	LOGGER.info("-----");
             }
         }
-        System.out.println();
     }
 	
 	public static void testReflection() throws IllegalAccessException, InvocationTargetException, ClassNotFoundException, InstantiationException, IllegalArgumentException, NoSuchMethodException, SecurityException {
-		System.out.println("---------- Reflection ----------");
+		LOGGER.info("---------- Reflection ----------");
 		
 		Class<?> chickenClass = Class.forName("com.solvd.linkedlist.product.Chicken");
 		Constructor<?>[] productConstructors = chickenClass.getConstructors();
 		Field[] productFields = chickenClass.getSuperclass().getDeclaredFields();
 		Chicken reflectionProduct = ((Chicken) productConstructors[1].newInstance("Fresh Chicken", 5555, "EA", 5.55, 11.11, 5));
-		System.out.println(reflectionProduct.getName());
+		LOGGER.info(reflectionProduct.getName());
 		Double reflectionMargin = (Double) chickenClass.getSuperclass().getDeclaredMethod("calculateMargin", (Class<?>[]) null).invoke(reflectionProduct, (Object[]) null);
-		System.out.println(reflectionMargin);
+		LOGGER.info(reflectionMargin);
 		productFields[3].trySetAccessible();
-		System.out.println(productFields[3].get(reflectionProduct));
+		LOGGER.info(productFields[3].get(reflectionProduct));
 	}
 
 }
